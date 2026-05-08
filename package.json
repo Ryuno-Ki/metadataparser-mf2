@@ -1,6 +1,6 @@
 {
   "name": "@ryunoki/metadataparser-mf2",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Provides an Microformats 2 extended MetaDataParser",
   "main": "./index.js",
   "type": "module",
@@ -14,12 +14,28 @@
       "pre-push": "npm test"
     }
   },
-  "homepage": "https://github.com/voxpelli/metadataparser-mf2",
-  "author": "Pelle Wessman <pelle@kodfabrik.se> (http://kodfabrik.se/)",
+  "homepage": "https://github.com/Ryuno-Ki/metadataparser-mf2",
+  "author": {
+    "name": "André Jaenisch",
+    "email": "andre.jaenisch.wdc@posteo.net",
+    "url": "https://jaenis.ch/"
+  },
+  "contributors": [{
+    "name": "Pelle Wessman",
+    "email": "pelle@kodfabrik.se",
+    "url": "http://kodfabrik.se/"
+  }],
   "repository": {
     "type": "git",
-    "url": "git://github.com/voxpelli/metadataparser-mf2.git"
+    "url": "git://github.com/Ryuno-Ki/metadataparser-mf2.git"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "package.json",
+    "package-lock.json"
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=24.0.0"
@@ -29,7 +45,7 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
-    "@ryunoki/metadataparser": "3.0.0",
+    "@ryunoki/metadataparser": "3.0.1",
     "c8": "11.0.0",
     "chai": "6.2.2",
     "eslint": "10.3.0",
@@ -40,7 +56,7 @@
     "mocha": "11.7.5"
   },
   "peerDependencies": {
-    "@ryunoki/metadataparser": "3.0.0"
+    "@ryunoki/metadataparser": "3.0.1"
   },
   "overrides": {
     "mocha": {
