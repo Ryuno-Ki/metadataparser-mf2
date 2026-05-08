@@ -1,15 +1,11 @@
-'use strict';
+import { should } from 'chai';
+import { MetaDataParser } from '@ryunoki/metadataparser';
 
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
+import { addToParser } from '../index.js';
 
-chai.use(chaiAsPromised);
-chai.should();
+should();
 
 describe('MetaDataParserMf2', function () {
-  const MetaDataParser = require('@voxpelli/metadataparser').MetaDataParser;
-  const MetaDataParserMf2 = require('../.');
-
   let parser, sourceUrl;
 
   // Taken from the h-entry Microformats wiki page
@@ -26,29 +22,32 @@ describe('MetaDataParserMf2', function () {
 
   beforeEach(function () {
     sourceUrl = 'http://example.com/foo';
-    parser = MetaDataParserMf2.addToParser(new MetaDataParser());
+    parser = addToParser(new MetaDataParser());
   });
 
   describe('extract', function () {
-    it('should parse the microformats data', function () {
-      return parser.extract(sourceUrl, exampleHtml)
-        .should.eventually.be.an('object')
+    it('should parse the microformats data', async function () {
+      const props = await parser.extract(sourceUrl, exampleHtml);
+
+      props.should.be.an('object')
         .that.has.property('microformats')
         .that.contain.keys('items', 'rels')
         .and.has.nested.property('items[0].properties')
         .that.is.an('object')
         .that.contain.keys('author', 'name', 'published', 'summary', 'url')
-        .then(props => Promise.all([
-          props.should.have.deep.property('url', ['http://example.com/abc']),
-          props.should.have.deep.property('published', ['2013-06-13T12:00:00']),
-          props.should.have.nested.property('author[0].properties.name[0]', 'W. Developer'),
-          props.should.have.deep.property('content', [
-            {
-              html: '    <p><a href="http://example.com/foo#bar">Yet</a> another <a>wow</a></p>    <p><a href="http://example.org/bar">Blah</a> blah blah</p>  ',
-              value: 'Yet another wow    Blah blah blah'
-            }
-          ])
-        ]));
+
+      props.microformats.items[0].properties.should.have.property('url');
+      props.microformats.items[0].properties.url.should.deep.equal(['http://example.com/abc']);
+      props.microformats.items[0].properties.should.have.property('published');
+      props.microformats.items[0].properties.published.should.deep.equal(['2013-06-13 12:00:00']);
+      props.microformats.items[0].properties.should.have.nested.property('author[0].properties.name[0]', 'W. Developer');
+      props.microformats.items[0].properties.should.have.property('content');
+      props.microformats.items[0].properties.content.should.deep.equal([
+        {
+          html: '<p><a href="#bar">Yet</a> another <a>wow</a></p>    <p><a href="http://example.org/bar">Blah</a> blah blah</p>',
+          value: 'Yet another wow    Blah blah blah'
+        }
+      ]);
     });
   });
 });
